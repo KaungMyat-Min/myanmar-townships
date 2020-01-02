@@ -1,0 +1,19 @@
+{
+    "name": "kaungmyat-min/myanmar-townships",
+    "description": "To handle backend for handling townships in myanmar",
+    "type": "library",
+    "authors": [
+        {
+            "name": "KaungMyat Min",
+            "email": "kaungmyatmin.biz@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "MyanmarTownships\\": "src/",
+            "MyanmarTownships\\Seeders": "src/database/seeds"
+        }
+    },
+    "require": {}
+}

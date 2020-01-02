@@ -32,7 +32,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "MyanmarTownships\\": "packages/kaungmyat-min/myanmar-townships/src"
         },
         "classmap": [
             "database/seeds",
