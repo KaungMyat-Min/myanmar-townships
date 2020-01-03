@@ -12,8 +12,11 @@
     "autoload": {
         "psr-4": {
             "MyanmarTownships\\": "src/",
-            "MyanmarTownships\\Seeders": "src/database/seeds"
+            "MyanmarTownships\\Seeders\\": "src/database/seeds"
         }
     },
-    "require": {}
+    "require": {
+        "rabbit-converter/rabbit-php": "dev-master",
+        "googlei18n/myanmar-tools": "^1.1"
+    }
 }
