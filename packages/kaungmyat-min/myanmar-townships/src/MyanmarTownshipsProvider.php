@@ -13,7 +13,8 @@ class MyanmarTownshipsProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->bind("MyanmarTownships\App\Helpers\Contracts\MyanmarTownship",
+            "MyanmarTownships\App\Helpers\MyanmarTownshipImpl");
     }
 
     /**
