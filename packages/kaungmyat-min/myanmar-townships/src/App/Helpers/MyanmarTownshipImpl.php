@@ -6,7 +6,12 @@ namespace MyanmarTownships\App\Helpers;
 
 use MyanmarTownships\App\Helpers\Contracts\MyanmarTownship;
 use MyanmarTownships\App\Helpers\Facades\FontConverter;
+use MyanmarTownships\App\Models\District;
+use MyanmarTownships\App\Models\State;
 use MyanmarTownships\App\Models\Township;
+use MyanmarTownships\App\Resources\DistrictCollection;
+use MyanmarTownships\App\Resources\StateCollection;
+use MyanmarTownships\App\Resources\TownshipCollection;
 
 class MyanmarTownshipImpl implements MyanmarTownship
 {
@@ -15,28 +20,73 @@ class MyanmarTownshipImpl implements MyanmarTownship
         if (!is_array($options)) {
             $options = ['q' => $options];
         }
-        $model = Township::class;
-        $with = ['district.state'];
+        $options['model'] = Township::class;
+        $options['with'] = ['district.state'];
 
-        $q = $this->extract_value_from_array('q', $options);
-        $sort = $this->extract_value_from_array('sort', $options, 'name_mm');
-        $limit = $this->extract_value_from_array('limit', $options, 10);
+        $result = $this->search($options);
 
-        return $this->search($model, $q, $with, $sort, $limit);
+        if ($this->isResourceResult($options)) {
+            return new TownshipCollection($result);
+        } else {
+            return $result;
+        }
+
     }
 
     public function searchDistricts($options)
     {
-        // TODO: Implement searchDistricts() method.
+        if (!is_array($options)) {
+            $options = ['q' => $options];
+        }
+        $options['model'] = District::class;
+        $options['with'] = ['state','townships'];
+
+        $result = $this->search($options);
+
+        if ($this->isResourceResult($options)) {
+            return new DistrictCollection($result);
+        } else {
+            return $result;
+        }
     }
 
     public function searchStates($options)
     {
-        // TODO: Implement searchStates() method.
+        if (!is_array($options)) {
+            $options = ['q' => $options];
+        }
+        $options['model'] = State::class;
+        $options['with'] = ['districts'];
+
+        $result = $this->search($options);
+
+        if ($this->isResourceResult($options)) {
+            return new StateCollection($result);
+        } else {
+            return $result;
+        }
     }
 
-    public function search($model, $q, $with = [], $sort = 'name', $limit = 10)
+    private function isResourceResult($options){
+        $is_resource_result = $this->extract_value_from_array('resource_result', $options);
+        if ($is_resource_result === null) {
+            $is_resource_result = config('myanmar-townships.resource_result', false);
+        }
+        return $is_resource_result;
+    }
+    private function search($options)
     {
+        $model = $this->extract_value_from_array('model', $options);
+        $with = $this->extract_value_from_array('with', $options);
+
+
+        //values come from user request
+        $q = $this->extract_value_from_array('q', $options);
+        $sort = $this->extract_value_from_array('sort', $options, 'name_mm');
+        $limit = $this->extract_value_from_array('limit', $options, 10);
+        $order = $this->extract_value_from_array('order',$options,'asc');
+
+
         $search_by_english = config('myanmar-townships.search_by_english');
         $search_by_zawgyi = config('myanmar-townships.search_by_zawgyi');
         $search_by_unicode = config('myanmar-townships.search_by_unicode');
@@ -53,13 +103,13 @@ class MyanmarTownshipImpl implements MyanmarTownship
                 return $query->orWhere('name_en', 'like', "%$q%");
             })
             ->with($with)
-            ->orderBy($sort)
+            ->orderBy($sort,$order)
             ->limit($limit);
 
         return $query->get();
     }
 
-    function extract_value_from_array(string $key, array $array, $default = null)
+    private function extract_value_from_array(string $key, array $array, $default = null)
     {
         if (array_key_exists($key, $array)) {
             return $array[$key];

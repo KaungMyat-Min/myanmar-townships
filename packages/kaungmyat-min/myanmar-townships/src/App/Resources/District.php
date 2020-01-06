@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Resources;
+namespace MyanmarTownships\App\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use MyanmarTownships\App\Resources\traits\RegionSerializer;
+use function foo\func;
 
 class District extends JsonResource
 {
+    use RegionSerializer;
+
     /**
      * Transform the resource into an array.
      *
@@ -15,9 +19,11 @@ class District extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name_mm' => $this->name_mm,
-            'name_en' => $this->name_en,
+            'district' => $this->serializeRegion($this),
+            'state' => $this->whenLoaded('state', function () {
+                return $this->serializeRegion($this->state);
+            }),
+            'townships' => Township::collection($this->whenLoaded('townships'))
         ];
     }
 }

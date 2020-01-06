@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('search/township',function (\Illuminate\Http\Request $request){
+   return \MyanmarTownships\App\Helpers\Facades\MyanmarTownship::searchTownships($request->all());
+});
+
+Route::get('search/district',function (\Illuminate\Http\Request $request){
+   return \MyanmarTownships\App\Helpers\Facades\MyanmarTownship::searchDistricts($request->all());
+});
+
+Route::get('search/state',function (\Illuminate\Http\Request $request){
+   return \MyanmarTownships\App\Helpers\Facades\MyanmarTownship::searchstates($request->all());
+});

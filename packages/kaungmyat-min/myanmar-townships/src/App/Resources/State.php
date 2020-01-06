@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Resources;
+namespace MyanmarTownships\App\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use MyanmarTownships\App\Resources\traits\RegionSerializer;
 
 class State extends JsonResource
 {
+    use RegionSerializer;
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +16,9 @@ class State extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'state'=> $this->serializeRegion($this),
+            'districts'=>District::collection($this->whenLoaded('districts'))
+        ];
     }
 }

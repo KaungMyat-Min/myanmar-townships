@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace MyanmarTownships\App\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 

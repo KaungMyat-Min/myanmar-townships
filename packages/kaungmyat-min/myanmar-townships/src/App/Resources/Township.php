@@ -3,9 +3,12 @@
 namespace MyanmarTownships\App\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use MyanmarTownships\App\Resources\traits\RegionSerializer;
 
 class Township extends JsonResource
 {
+    use RegionSerializer;
+
     /**
      * Transform the resource into an array.
      *
@@ -15,11 +18,13 @@ class Township extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'name_eng' => $this->name_eng,
-            'district' => $this->district->name,
-            'state' => $this->district->state->name,
+            'township' => $this->serializeRegion($this),
+            'district' => $this->whenLoaded('district',function (){
+                return $this->serializeRegion($this->district);
+            }),
+            'state' => $this->when($this->relationLoaded('district') && $this->district->relationLoaded('state'), function () {
+                return $this->serializeRegion($this->district->state);
+            }),
         ];
     }
 }
