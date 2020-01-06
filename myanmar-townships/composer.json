@@ -1,6 +1,6 @@
 {
     "name": "kmm/myanmar-townships",
-    "description": "To handle backend for handling townships in myanmar",
+    "description": "Laravel package for handling townships in myanmar",
     "type": "library",
     "authors": [
         {
