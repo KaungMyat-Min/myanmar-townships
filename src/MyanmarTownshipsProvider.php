@@ -30,8 +30,8 @@ class MyanmarTownshipsProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
         $this->publishes([
-            __DIR__ . '/config/myanmar-township.php' => config_path('myanmar-townships.php'),
-        ]);
+            __DIR__ . '/config/myanmar-townships.php' => config_path('myanmar-townships.php'),
+        ],'myanmar-townships');
 
         $this->mergeConfigFrom(__DIR__ . '/config/myanmar-townships.php', 'myanmar-townships');
         $this->mergeConfigFrom(__DIR__ . '/config/township.php', 'township');
