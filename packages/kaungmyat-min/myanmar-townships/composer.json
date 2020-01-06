@@ -1,5 +1,5 @@
 {
-    "name": "kaungmyat-min/myanmar-townships",
+    "name": "kmm/myanmar-townships",
     "description": "To handle backend for handling townships in myanmar",
     "type": "library",
     "authors": [
@@ -16,7 +16,14 @@
         }
     },
     "require": {
-        "rabbit-converter/rabbit-php": "dev-master",
-        "googlei18n/myanmar-tools": "^1.1"
+        "laravelcollective/html": "^5.5"
+    },
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MyanmarTownships\\MyanmarTownshipsProvider"
+            ]
+        }
     }
 }
